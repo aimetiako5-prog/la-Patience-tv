@@ -80,6 +80,59 @@ export type Database = {
         }
         Relationships: []
       }
+      payment_requests: {
+        Row: {
+          amount: number
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          external_transaction_id: string | null
+          id: string
+          months: number
+          payment_method: string
+          phone_number: string
+          status: string
+          subscriber_id: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          external_transaction_id?: string | null
+          id?: string
+          months?: number
+          payment_method: string
+          phone_number: string
+          status?: string
+          subscriber_id: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          external_transaction_id?: string | null
+          id?: string
+          months?: number
+          payment_method?: string
+          phone_number?: string
+          status?: string
+          subscriber_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_requests_subscriber_id_fkey"
+            columns: ["subscriber_id"]
+            isOneToOne: false
+            referencedRelation: "subscribers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payments: {
         Row: {
           amount: number
@@ -211,6 +264,44 @@ export type Database = {
         }
         Relationships: []
       }
+      subscriber_sessions: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          ip_address: string | null
+          subscriber_id: string
+          token: string
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          expires_at: string
+          id?: string
+          ip_address?: string | null
+          subscriber_id: string
+          token: string
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          ip_address?: string | null
+          subscriber_id?: string
+          token?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriber_sessions_subscriber_id_fkey"
+            columns: ["subscriber_id"]
+            isOneToOne: false
+            referencedRelation: "subscribers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscribers: {
         Row: {
           address: string
@@ -219,11 +310,14 @@ export type Database = {
           created_by: string | null
           email: string | null
           id: string
+          last_login_at: string | null
           line_number: string | null
           name: string
           notes: string | null
           phone: string
           phone_secondary: string | null
+          pin_hash: string | null
+          pin_set_at: string | null
           signal_active: boolean
           subscription_expires_at: string | null
           subscription_status: Database["public"]["Enums"]["subscription_status"]
@@ -237,11 +331,14 @@ export type Database = {
           created_by?: string | null
           email?: string | null
           id?: string
+          last_login_at?: string | null
           line_number?: string | null
           name: string
           notes?: string | null
           phone: string
           phone_secondary?: string | null
+          pin_hash?: string | null
+          pin_set_at?: string | null
           signal_active?: boolean
           subscription_expires_at?: string | null
           subscription_status?: Database["public"]["Enums"]["subscription_status"]
@@ -255,11 +352,14 @@ export type Database = {
           created_by?: string | null
           email?: string | null
           id?: string
+          last_login_at?: string | null
           line_number?: string | null
           name?: string
           notes?: string | null
           phone?: string
           phone_secondary?: string | null
+          pin_hash?: string | null
+          pin_set_at?: string | null
           signal_active?: boolean
           subscription_expires_at?: string | null
           subscription_status?: Database["public"]["Enums"]["subscription_status"]
