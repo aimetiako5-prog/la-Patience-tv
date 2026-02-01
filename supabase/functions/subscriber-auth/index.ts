@@ -20,6 +20,23 @@ function generateToken(): string {
   return Array.from(array, (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+// Normalize phone number to include country code
+function normalizePhone(phone: string): string {
+  // Remove all non-digit characters except +
+  let cleaned = phone.replace(/[^\d+]/g, "");
+  
+  // If starts with 6, 7, 2 (Cameroon numbers), add +237
+  if (/^[672]\d{8}$/.test(cleaned)) {
+    cleaned = "+237" + cleaned;
+  }
+  // If starts with 237, add +
+  else if (/^237\d{9}$/.test(cleaned)) {
+    cleaned = "+" + cleaned;
+  }
+  
+  return cleaned;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -31,7 +48,9 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const { action, phone, pin, token } = await req.json();
+    const body = await req.json();
+    const { action, pin, token } = body;
+    const phone = body.phone ? normalizePhone(body.phone) : undefined;
 
     // Check if subscriber exists
     if (action === "check") {
