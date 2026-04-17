@@ -136,15 +136,20 @@ export default function SubscriberLogin() {
               <form onSubmit={handlePhoneSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="phone">Numéro de téléphone</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="6XXXXXXXX"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                    className="text-lg tracking-wider"
-                    autoComplete="tel"
-                  />
+                  <div className="flex items-center rounded-md border border-input bg-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ring-offset-background overflow-hidden">
+                    <span className="flex items-center gap-1 px-3 h-10 bg-muted text-muted-foreground text-sm font-medium border-r border-input select-none">
+                      🇨🇲 +237
+                    </span>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="6XX XXX XXX"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 9))}
+                      className="text-lg tracking-wider border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      autoComplete="tel"
+                    />
+                  </div>
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading || phone.length < 9}>
                   {isLoading ? (
